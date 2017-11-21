@@ -25,9 +25,7 @@
                 android:id="@+id/thumbnail_image"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/movie_cover_height"
-                android:clickable="true"
-                android:scaleType="fitXY"
-                android:visibility="invisible"/>
+                android:scaleType="fitXY"/>
 
                 <ProgressBar
                     style="?android:attr/progressBarStyle"

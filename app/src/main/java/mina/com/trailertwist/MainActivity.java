@@ -22,8 +22,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,12 +35,13 @@ import mina.com.trailertwist.model.Movie;
 
 public class MainActivity extends AppCompatActivity
         implements LoaderManager.LoaderCallbacks<List<Movie>>,
-        SharedPreferences.OnSharedPreferenceChangeListener{
-
+        SharedPreferences.OnSharedPreferenceChangeListener,
+        MovieAdapter.ListItemClickListener{
 
 
 
     private String USGS_REQUEST_URL ;
+    public static final String MOVIE_INFO = "current Movie Info";
     private RecyclerView recyclerView;
     private MovieAdapter adapter;
     private List<Movie> movieList;
@@ -48,8 +49,10 @@ public class MainActivity extends AppCompatActivity
     private static final int EARTHQUAKE_LOADER_ID = 1;
     private static int page = 1;
     private static String sortedBy;
-
+    private Toast testToast;
     private Spinner spinner;
+    private int spinnerSelection;
+    private final String spinner_on_save_instance_key = "spinner position" ;
 
 
 
@@ -58,13 +61,25 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         USGS_REQUEST_URL = mcontext.getString(R.string.api_url);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
 
         movieList = new ArrayList<>();
 
-        adapter = new MovieAdapter(this, movieList);
+        adapter = new MovieAdapter(this, movieList,this);
+
+
+        if(savedInstanceState != null && savedInstanceState.containsKey(spinner_on_save_instance_key)) {
+            spinnerSelection = savedInstanceState.getInt(spinner_on_save_instance_key);
+            Log.i("saveInstanceState ", spinnerSelection+"");
+        }
+        else {
+            spinnerSelection = 0;
+            Log.i("saveInstanceState ", spinnerSelection+"");
+
+        }
         //Log.i("main: ","before adapter notify");
         LoaderManager loaderManager = getLoaderManager();
         loaderManager.initLoader(EARTHQUAKE_LOADER_ID, null, this);
@@ -83,6 +98,9 @@ public class MainActivity extends AppCompatActivity
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         prefs.registerOnSharedPreferenceChangeListener(this);
 
+
+
+
       // Log.i("main: ","after adapter notify");
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(mLayoutManager);
@@ -100,13 +118,11 @@ public class MainActivity extends AppCompatActivity
     @Override
     public Loader<List<Movie>> onCreateLoader(int i, Bundle bundle) {
 
+
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         String page = sharedPrefs.getString(
                 getString(R.string.api_page_url_key),
                 getString(R.string.api_page_url_value));
-
-        //sortedBy = getString(R.string.api_url_sorted_by_popular);
-
 
                 String temp = USGS_REQUEST_URL + sortedBy + "?" ;
         Uri baseUri = Uri.parse(temp);
@@ -117,6 +133,7 @@ public class MainActivity extends AppCompatActivity
         uriBuilder.appendQueryParameter(mcontext.getString(R.string.api_page_url_key), page);
 
         Log.i("urlllllllllllllllllll: " , uriBuilder.toString());
+
 
 
         return new MovieLoader(this, uriBuilder.toString());
@@ -182,9 +199,18 @@ public class MainActivity extends AppCompatActivity
         adapter.notifyDataSetChanged();
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(spinner_on_save_instance_key,spinner.getSelectedItemPosition());
+        Log.i(spinner_on_save_instance_key, spinner.getSelectedItemPosition()+"");
+
+    }
+
     private void setupSpinner() {
         String[] arrayOfOptions = getResources().getStringArray(R.array.sort_spinner);
         SpinnerAdapter spinnerAdapter = new SpinnerAdapter(MainActivity.this, arrayOfOptions);
+        spinner.setSelection(spinnerSelection);
         spinner.setAdapter(spinnerAdapter);
 
 
@@ -208,16 +234,25 @@ public class MainActivity extends AppCompatActivity
                     else {
                         // for favorite option in stage 2...
                     }
-
+                    spinnerSelection = spinner.getSelectedItemPosition();
                     restartLoader();
                 }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
+                Log.i("no thingggg","nothing selected !");
                 sortedBy = getString(R.string.api_url_sorted_by_popular);
             }
         });
+    }
+
+    @Override
+    public void onListitemClick(int clickitemIndex) {
+        Movie currentMovie = movieList.get(clickitemIndex);
+        Intent detailIntent = new Intent(MainActivity.this, MovieDetailsActivity.class);
+        detailIntent.putExtra(MOVIE_INFO, currentMovie);
+        startActivity(detailIntent);
     }
 
 

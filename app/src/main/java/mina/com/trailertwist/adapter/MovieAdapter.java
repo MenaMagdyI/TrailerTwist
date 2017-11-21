@@ -30,9 +30,14 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
     private Context mContext;
     private List<Movie> movieList;
 
+    private final ListItemClickListener mOnclickListner;
     private int lastPosition = -1;
 
-    public class MyViewHolder extends RecyclerView.ViewHolder{
+    public interface ListItemClickListener{
+        void onListitemClick(int clickitemIndex);
+    }
+
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         public TextView title, rate;
         public ImageView thumbnail, smallmenu;
@@ -48,14 +53,22 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
             smallmenu = (ImageView) itemView.findViewById(R.id.smallmenu);
             loadingIndicator = itemView.findViewById(R.id.posterprogress);
             loadingIndicator.setVisibility(View.VISIBLE);
+            itemView.setOnClickListener(this);
 
 
         }
+
+        @Override
+        public void onClick(View view) {
+            int position = getAdapterPosition();
+            mOnclickListner.onListitemClick(position);
+        }
     }
 
-    public MovieAdapter(Context mContext, List<Movie> movieList) {
+    public MovieAdapter(Context mContext, List<Movie> movieList, ListItemClickListener mOnclickListner) {
         this.mContext = mContext;
         this.movieList = movieList;
+        this.mOnclickListner = mOnclickListner;
     }
 
     @Override
@@ -64,8 +77,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.movie_cardview, parent, false);
 
-        //Log.i("Movie adapter: ","in onCreateViewHolder method");
-
         return new MyViewHolder(itemView);
 
 
@@ -73,7 +84,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
-
 
 
         Movie movie = movieList.get(position);
@@ -90,7 +100,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
        /* View loadingIndicator = null;
         loadingIndicator = loadingIndicator.findViewById(R.id.posterprogress);*/
         holder.loadingIndicator.setVisibility(View.GONE);
-        holder.thumbnail.setVisibility(View.VISIBLE);
 
 
 
@@ -110,9 +119,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
         return movieList.size();
     }
 
-    /**
-     * Showing popup smallmoviemenu when tapping on 3 dots
-     */
+
     private void showPopupMenu(View view) {
         // inflate smallmoviemenu
         PopupMenu popup = new PopupMenu(mContext, view);

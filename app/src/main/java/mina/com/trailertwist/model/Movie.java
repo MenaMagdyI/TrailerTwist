@@ -1,12 +1,14 @@
 package mina.com.trailertwist.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
 /**
  * Created by Mena on 11/17/2017.
  */
 
-public class Movie {
+public class Movie implements Parcelable {
 
     private int mVoteCount;
     private int mId;
@@ -36,6 +38,30 @@ public class Movie {
         this.mOverView = mOverView;
         this.mReleaseDate = mReleaseDate;
     }
+
+    protected Movie(Parcel in) {
+        mVoteCount = in.readInt();
+        mId = in.readInt();
+        mVote = in.readDouble();
+        mTitle = in.readString();
+        mPosterPath = in.readString();
+        mBackdropPath = in.readString();
+        mAdult = in.readByte() != 0;
+        mOverView = in.readString();
+        mReleaseDate = in.readString();
+    }
+
+    public static final Creator<Movie> CREATOR = new Creator<Movie>() {
+        @Override
+        public Movie createFromParcel(Parcel in) {
+            return new Movie(in);
+        }
+
+        @Override
+        public Movie[] newArray(int size) {
+            return new Movie[size];
+        }
+    };
 
     public int getmVoteCount() {
         return mVoteCount;
@@ -110,7 +136,21 @@ public class Movie {
     }
 
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
 
-
-
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(mVoteCount);
+        parcel.writeInt(mId);
+        parcel.writeDouble(mVote);
+        parcel.writeString(mTitle);
+        parcel.writeString(mPosterPath);
+        parcel.writeString(mBackdropPath);
+        parcel.writeByte((byte) (mAdult ? 1 : 0));
+        parcel.writeString(mOverView);
+        parcel.writeString(mReleaseDate);
+    }
 }
