@@ -2,5 +2,8 @@
 <resources>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#3ef556</color>
+    <color name="main_bg">#f1f5f8</color>
+    <color name="movie_title">#4c4c4c</color>
+
 </resources>

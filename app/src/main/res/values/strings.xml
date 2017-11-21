@@ -1,3 +1,41 @@
 <resources>
     <string name="app_name">TrailerTwist</string>
+    <string name="action_add_favourite">Add to favorite</string>
+
+
+    <!--  API based urls -->
+    <string name="url_request_method">GET</string>
+    <string name="api_url">https://api.themoviedb.org/3/movie/</string>
+    <string name="poster_url">https://image.tmdb.org/t/p/w500</string>
+
+    <!-- Movies Sort Options -->
+    <string name="sort_option">Sort By: </string>
+    <string name="sorted_by_popular_label">Popular</string>
+    <string name="api_url_sorted_by_popular">popular</string>
+    <string name="sorted_by_top_rated_label">Top Rated</string>
+    <string name="api_url_sorted_by_top_rated">top_rated</string>
+    <string name="sorted_by_now_playing_label">Now PLaying</string>
+    <string name="api_url_sorted_by_now_playing">now_playing</string>
+    <string name="sorted_by_favorites_lable">Favorite</string>
+
+    <!-- Api key -->
+    <string name="api_key_url_key">api_key</string>
+    <string name="api_sort_key">sort_by</string>
+    <string name="api_page_url_key">page</string>
+
+    <string name="api_key_url_value">c92440dfae80055e26317eef066fb6e7</string>
+
+
+    <!-- Json Parsing Keys -->
+    <string name="json_key_results_array">results</string>
+    <string name="json_key_movie_id">id</string>
+    <string name="json_key_movie_title">title</string>
+    <string name="json_key_movie_rate">vote_average</string>
+    <string name="json_key_movie_rate_count">vote_count</string>
+    <string name="json_key_movie_adult">adult</string>
+    <string name="json_key_movie_plot">overview</string>
+    <string name="json_key_poster_path">poster_path</string>
+    <string name="json_key_Backdrop_path">backdrop_path</string>
+    <string name="json_key_release_date">release_date</string>
+
 </resources>
