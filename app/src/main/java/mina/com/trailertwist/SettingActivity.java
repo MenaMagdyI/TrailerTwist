@@ -26,8 +26,8 @@ public class SettingActivity extends AppCompatActivity {
 
             addPreferencesFromResource(R.xml.setting);
 
-            Preference sorted_by = findPreference(getString(R.string.api_sort_key));
-            bindPreferenceSummaryToValue(sorted_by);
+            Preference pageNum = findPreference(getString(R.string.api_page_url_key));
+            bindPreferenceSummaryToValue(pageNum);
 
 
         }

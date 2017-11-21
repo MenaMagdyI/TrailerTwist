@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="sort_spinner">
+        <item>@string/sorted_by_popular_label</item>
+        <item>@string/sorted_by_top_rated_label</item>
+        <item>@string/sorted_by_now_playing_label</item>
+        <item>@string/sorted_by_now_upcoming_label</item>
+        <item>@string/sorted_by_favorites_lable</item>
+    </string-array>
+
+</resources>

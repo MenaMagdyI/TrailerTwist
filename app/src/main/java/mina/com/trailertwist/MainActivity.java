@@ -9,22 +9,28 @@ import android.content.res.Resources;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.preference.PreferenceManager;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import mina.com.trailertwist.Loader.MovieLoader;
 import mina.com.trailertwist.adapter.MovieAdapter;
+import mina.com.trailertwist.adapter.SpinnerAdapter;
 import mina.com.trailertwist.model.Movie;
 
 public class MainActivity extends AppCompatActivity
@@ -41,6 +47,9 @@ public class MainActivity extends AppCompatActivity
     private Context mcontext = this;
     private static final int EARTHQUAKE_LOADER_ID = 1;
     private static int page = 1;
+    private static String sortedBy;
+
+    private Spinner spinner;
 
 
 
@@ -92,9 +101,12 @@ public class MainActivity extends AppCompatActivity
     public Loader<List<Movie>> onCreateLoader(int i, Bundle bundle) {
 
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-        String sortedBy = sharedPrefs.getString(
-                getString(R.string.api_sort_key),
-                getString(R.string.api_url_sorted_by_top_rated));
+        String page = sharedPrefs.getString(
+                getString(R.string.api_page_url_key),
+                getString(R.string.api_page_url_value));
+
+        //sortedBy = getString(R.string.api_url_sorted_by_popular);
+
 
                 String temp = USGS_REQUEST_URL + sortedBy + "?" ;
         Uri baseUri = Uri.parse(temp);
@@ -102,7 +114,7 @@ public class MainActivity extends AppCompatActivity
 
        // uriBuilder.appendQueryParameter(getString(R.string.api_sort_key), sortedBy);
         uriBuilder.appendQueryParameter(mcontext.getString(R.string.api_key_url_key), mcontext.getString(R.string.api_key_url_value));
-        uriBuilder.appendQueryParameter(mcontext.getString(R.string.api_page_url_key), Integer.toString(page));
+        uriBuilder.appendQueryParameter(mcontext.getString(R.string.api_page_url_key), page);
 
         Log.i("urlllllllllllllllllll: " , uriBuilder.toString());
 
@@ -132,6 +144,9 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.mainmenu, menu);
+        MenuItem item = menu.findItem(R.id.sort_spinner);
+        spinner = (Spinner) MenuItemCompat.getActionView(item);
+        setupSpinner();
         return true;
     }
 
@@ -151,12 +166,58 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
-        if (s.equals(getString(R.string.api_sort_key))){
+        if (s.equals(getString(R.string.api_page_url_key))){
             movieList.clear();
             adapter.notifyDataSetChanged();
             getLoaderManager().restartLoader(EARTHQUAKE_LOADER_ID, null, this);
             adapter.notifyDataSetChanged();
         }
+    }
+
+
+    public void restartLoader(){
+        movieList.clear();
+        adapter.notifyDataSetChanged();
+        getLoaderManager().restartLoader(EARTHQUAKE_LOADER_ID, null, this);
+        adapter.notifyDataSetChanged();
+    }
+
+    private void setupSpinner() {
+        String[] arrayOfOptions = getResources().getStringArray(R.array.sort_spinner);
+        SpinnerAdapter spinnerAdapter = new SpinnerAdapter(MainActivity.this, arrayOfOptions);
+        spinner.setAdapter(spinnerAdapter);
+
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selection = (String) parent.getItemAtPosition(position);
+                if (!TextUtils.isEmpty(selection)) {
+                    if (selection.equals(getString(R.string.sorted_by_popular_label))) {
+                        sortedBy = getString(R.string.api_url_sorted_by_popular);
+                    }
+                    else if (selection.equals(getString(R.string.sorted_by_top_rated_label))) {
+                        sortedBy = getString(R.string.api_url_sorted_by_top_rated);
+                    }
+                    else if (selection.equals(getString(R.string.sorted_by_now_playing_label))) {
+                        sortedBy = getString(R.string.api_url_sorted_by_now_playing);
+                    }
+                    else if (selection.equals(getString(R.string.sorted_by_now_upcoming_label))) {
+                        sortedBy = getString(R.string.api_url_sorted_by_upcoming);
+                    }
+                    else {
+                        // for favorite option in stage 2...
+                    }
+
+                    restartLoader();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                sortedBy = getString(R.string.api_url_sorted_by_popular);
+            }
+        });
     }
 
 

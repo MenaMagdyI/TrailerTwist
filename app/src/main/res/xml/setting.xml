@@ -3,10 +3,12 @@
     android:title="Settings">
 
     <EditTextPreference
-        android:defaultValue="@string/api_url_sorted_by_popular"
+        android:defaultValue="@string/api_page_url_value"
         android:inputType="text"
-        android:key="@string/api_sort_key"
+        android:key="@string/api_page_url_key"
         android:selectAllOnFocus="true"
-        android:title="@string/sort_option" />
+        android:title="@string/prefrence_title_1" />
+
+
 
 </PreferenceScreen>
