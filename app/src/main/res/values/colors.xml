@@ -7,5 +7,8 @@
     <color name="movie_title">#4c4c4c</color>
     <color name="white">#ffffff</color>
     <color name="title_BG">#0ed4c0</color>
+    <color name="release_date_BG">#0e8bd4</color>
+    <color name="rate_BG">#0f64e4</color>
+    <color name="overview_BG">#f2fffe</color>
 
 </resources>
