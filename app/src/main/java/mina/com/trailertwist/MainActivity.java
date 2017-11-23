@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity
 
 
 
+
     private String USGS_REQUEST_URL ;
     public static final String MOVIE_INFO = "current Movie Info";
     private RecyclerView recyclerView;
@@ -54,7 +55,7 @@ public class MainActivity extends AppCompatActivity
     private static String sortedBy;
     private Toast testToast;
     private Spinner spinner;
-    private int spinnerSelection;
+    private static int spinnerSelection;
     private final String spinner_on_save_instance_key = "spinner position" ;
     private TextView errorMessage ;
 
@@ -182,6 +183,9 @@ public class MainActivity extends AppCompatActivity
         getMenuInflater().inflate(R.menu.mainmenu, menu);
         MenuItem item = menu.findItem(R.id.sort_spinner);
         spinner = (Spinner) MenuItemCompat.getActionView(item);
+        String[] arrayOfOptions = getResources().getStringArray(R.array.sort_spinner);
+        SpinnerAdapter spinnerAdapter = new SpinnerAdapter(MainActivity.this, arrayOfOptions);
+        spinner.setAdapter(spinnerAdapter);
         spinner.setSelection(spinnerSelection);
         setupSpinner();
         return true;
@@ -226,17 +230,20 @@ public class MainActivity extends AppCompatActivity
         Log.i(spinner_on_save_instance_key, spinner.getSelectedItemPosition()+"");
 
     }
+/*
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        spinnerSelection = savedInstanceState.getInt(spinner_on_save_instance_key);
+    }*/
 
     private void setupSpinner() {
-        String[] arrayOfOptions = getResources().getStringArray(R.array.sort_spinner);
-        SpinnerAdapter spinnerAdapter = new SpinnerAdapter(MainActivity.this, arrayOfOptions);
-        spinner.setAdapter(spinnerAdapter);
+
 
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
                 String selection = (String) parent.getItemAtPosition(position);
                 if (!TextUtils.isEmpty(selection)) {
                     if (selection.equals(getString(R.string.sorted_by_popular_label))) {
