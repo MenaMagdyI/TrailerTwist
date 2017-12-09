@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="mina.com.trailertwist.MovieDetailsActivity"
+    tools:showIn="@layout/activity_movie_details">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="5dp">
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+                                <ImageView
+                                    android:layout_width="150dp"
+                                    android:layout_height="210dp"
+                                    android:background="@drawable/content"
+                                    android:id="@+id/movie_card_Image_Id"/>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical"
+                                    android:layout_margin="5dp">
+
+                                        <TextView
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:id="@+id/movie_card_title_id"
+                                            android:text="Place Holder"
+                                            android:textSize="25dp"
+                                            android:textColor="@color/movie_title"/>
+
+
+                                        <TextView
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:id="@+id/movie_card_date_id"
+                                            android:text="Place Holder"
+                                            android:textSize="15dp"
+                                            android:layout_marginTop="3dp"
+                                            android:layout_marginLeft="3dp"
+                                            android:textColor="@color/movie_title"/>
+
+
+
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:id="@+id/movie_card_rate_id"
+                                            android:textSize="15dp"
+                                            android:text="Rate: 9.1"
+                                            android:layout_marginLeft="3dp"
+                                            android:textColor="@color/movie_title"/>
+
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:id="@+id/movie_card_ratevotes_id"
+                                            android:textSize="15dp"
+                                            android:text="1405 vorte"
+                                            android:layout_marginLeft="5dp"
+                                            android:textColor="@color/movie_title"/>
+
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:id="@+id/movie_card_Adult_id"
+                                            android:textSize="15dp"
+                                            android:text="Adults only: "
+                                            android:layout_marginLeft="5dp"
+                                            android:textColor="@color/movie_title"/>
+
+
+
+
+
+                                </LinearLayout>
+                        </LinearLayout>
+
+
+
+
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_marginLeft="10dp"
+                                    android:textSize="27dp"
+                                    android:text="OverView"
+                                    android:textColor="@color/movie_title"/>
+
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:id="@+id/movie_overview"
+                                    android:layout_marginTop="7dp"
+                                    android:layout_marginLeft="15dp"
+                                    android:layout_marginBottom="10dp"
+                                    android:textSize="20dp"
+                                    android:text="Place Holder"
+                                    android:textColor="@color/overview_C"/>
+
+                        </LinearLayout>
+
+                </android.support.v7.widget.CardView>
+
+        </LinearLayout>
+
+
+
+
+
+
+
+</android.support.v4.widget.NestedScrollView>
