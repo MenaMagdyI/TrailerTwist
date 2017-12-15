@@ -31,7 +31,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
     private List<Movie> movieList;
 
     private final ListItemClickListener mOnclickListner;
-    private int lastPosition = -1;
+
 
     public interface ListItemClickListener{
         void onListitemClick(int clickitemIndex);

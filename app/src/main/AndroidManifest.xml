@@ -32,6 +32,11 @@
             android:label="@string/detailed_activity"
             android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName="mina.com.trailertwist.MainActivity"></activity>
+
+        <provider
+            android:authorities="com.example.android.movies"
+            android:name=".data.FavoriteProvider"
+            android:exported="false"/>
     </application>
 
 </manifest>

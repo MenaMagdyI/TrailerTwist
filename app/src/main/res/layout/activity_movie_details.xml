@@ -80,4 +80,5 @@
     <include layout="@layout/activity_movie_details_content" />
 
 
+
 </android.support.design.widget.CoordinatorLayout>

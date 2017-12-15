@@ -27,6 +27,15 @@ public class Movie implements Parcelable {
         //Log.i("constructore:",mTitle+" created !");
     }
 
+    public Movie(int mId, String mTitle, String mReleaseDate, String mOverView, double mVote, String mPosterPath) {
+        this.mId = mId;
+        this.mVote = mVote;
+        this.mTitle = mTitle;
+        this.mPosterPath = mPosterPath;
+        this.mOverView = mOverView;
+        this.mReleaseDate = mReleaseDate;
+    }
+
     public Movie(int mVoteCount, int mId, double mVote, String mTitle, String mPosterPath, String mBackdropPath, boolean mAdult, String mOverView, String mReleaseDate) {
         this.mVoteCount = mVoteCount;
         this.mId = mId;

@@ -21,6 +21,8 @@ import java.util.List;
 
 import mina.com.trailertwist.R;
 import mina.com.trailertwist.model.Movie;
+import mina.com.trailertwist.model.MovieReview;
+import mina.com.trailertwist.model.MovieTrailer;
 
 /**
  * Created by Mena on 11/19/2017.
@@ -153,6 +155,71 @@ public class NetworkQueryUtils {
         return movies;
     }
 
+    private static List<MovieTrailer> extractTrailersFromJson(String jsonResponse, Context context) {
+        ArrayList<MovieTrailer> trailers = new ArrayList<>();
+        if (jsonResponse == null || jsonResponse.length() == 0) {
+            return trailers;
+        }
+
+        try {
+            JSONObject root = new JSONObject(jsonResponse);
+            JSONArray results = root.getJSONArray(context.getString(R.string.json_key_results_array));
+
+            String trailerId;
+            String trailerKey;
+            String trailerSite;
+            String trailerTitle;
+            String trailerSize;
+            String trailerType;
+            for(int i=0 ; i<results.length() ; i++) {
+                JSONObject trailer = results.getJSONObject(i);
+                trailerId = trailer.getString(context.getString(R.string.json_key_trailer_Id));
+                trailerTitle = trailer.getString(context.getString(R.string.json_key_trailer_title));
+                trailerKey = trailer.getString(context.getString(R.string.json_key_trailer_key));
+                trailerSite = trailer.getString(context.getString(R.string.json_key_trailer_site));
+                trailerSize = trailer.getString(context.getString(R.string.json_key_trailer_size));
+                trailerType = trailer.getString(context.getString(R.string.json_key_trailer_type));
+                trailers.add(new MovieTrailer(trailerId,trailerKey,trailerTitle,trailerSite,trailerSize,trailerType));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return trailers;
+    }
+
+
+    private static List<MovieReview> extractReviewsFromJson(String jsonResponse, Context context) {
+        ArrayList<MovieReview> reviews = new ArrayList<>();
+        if (jsonResponse == null || jsonResponse.length()==0) {
+            return reviews;
+        }
+
+        try {
+            JSONObject root = new JSONObject(jsonResponse);
+            JSONArray results = root.getJSONArray(context.getString(R.string.json_key_results_array));
+
+            String id;
+            String author;
+            String content;
+            String url;
+
+            for (int i=0 ; i<results.length() ; i++) {
+                JSONObject review = results.getJSONObject(i);
+                id  = review.getString(context.getString(R.string.json_key_review_Id));
+                author  = review.getString(context.getString(R.string.json_key_review_author));
+                content = review.getString(context.getString(R.string.json_key_review_content));
+                url = review.getString(context.getString(R.string.json_key_review_url));
+
+                reviews.add(new MovieReview(id,author,content,url));
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return reviews;
+    }
+
+
     public static List<Movie> fetchDatafMovies(String requestUrl, Context context) {
 
         URL url = createUrl(requestUrl);
@@ -171,6 +238,42 @@ public class NetworkQueryUtils {
        // Log.i("afterFeatureFromJson : ",movies.get(0).getmTitle());
         return movies;
     }
+
+
+
+    public static List<MovieTrailer> fetchDatafTrailers(String requestUrl, Context context) {
+
+        URL url = createUrl(requestUrl);
+        String jsonResponse = null;
+        try {
+            jsonResponse = makeHttpRequest(url);
+        } catch (IOException e) {
+            Log.e(NetworkQueryUtils.class.getSimpleName(), "Problem making the HTTP request.", e);
+        }
+        List<MovieTrailer> Trailers = extractTrailersFromJson(jsonResponse , context);
+
+        return Trailers;
+    }
+
+
+    public static List<MovieReview> fetchDatafReviews(String requestUrl, Context context) {
+
+        URL url = createUrl(requestUrl);
+        String jsonResponse = null;
+        try {
+            jsonResponse = makeHttpRequest(url);
+        } catch (IOException e) {
+            Log.e(NetworkQueryUtils.class.getSimpleName(), "Problem making the HTTP request.", e);
+        }
+        List<MovieReview> Reviews = extractReviewsFromJson(jsonResponse , context);
+
+        return Reviews;
+    }
+
+
+
+
+
 
 
 

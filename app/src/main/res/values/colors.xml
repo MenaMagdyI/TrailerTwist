@@ -12,5 +12,6 @@
     <color name="rate_BG">#0f64e4</color>
     <color name="overview_BG">#f2fffe</color>
     <color name="overview_C">#696969</color>
+    <color name="user_color">#26a758</color>
 
 </resources>
