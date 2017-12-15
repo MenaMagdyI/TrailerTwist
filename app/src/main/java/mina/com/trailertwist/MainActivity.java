@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity
     private static int spinnerSelection;
     private final String spinner_on_save_instance_key = "spinner position" ;
     private TextView errorMessage ;
+    private View loadingIndicator;
 
 
 
@@ -69,15 +70,18 @@ public class MainActivity extends AppCompatActivity
 
         USGS_REQUEST_URL = mcontext.getString(R.string.api_url);
         errorMessage = (TextView) findViewById(R.id.message);
+        loadingIndicator = findViewById(R.id.loading_indicator);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
 
+        loadingIndicator.setVisibility(View.VISIBLE);
         movieList = new ArrayList<>();
 
         adapter = new MovieAdapter(this, movieList,this);
 
 
-        // why is this not working ! maybe initializing spinner problem.
+
+        // why is this not working ! maybe initializing spinner problem.  // [[SOLVED]]
         if(savedInstanceState != null && savedInstanceState.containsKey(spinner_on_save_instance_key)) {
             spinnerSelection = savedInstanceState.getInt(spinner_on_save_instance_key);
             Log.i("saveInstanceState ", spinnerSelection+"");
@@ -139,6 +143,7 @@ public class MainActivity extends AppCompatActivity
     public Loader<List<Movie>> onCreateLoader(int i, Bundle bundle) {
 
 
+        loadingIndicator.setVisibility(View.VISIBLE);
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         String page = sharedPrefs.getString(
                 getString(R.string.api_page_url_key),
@@ -156,25 +161,42 @@ public class MainActivity extends AppCompatActivity
 
 
 
-        return new MovieLoader(this, uriBuilder.toString());
+        return new MovieLoader(this, uriBuilder.toString(),spinnerSelection);
     }
 
     @Override
     public void onLoadFinished(Loader<List<Movie>> loader, List<Movie> movies) {
 
 
+        loadingIndicator.setVisibility(View.GONE);
+        movieList.clear();
+
 
         if (movies != null && !movies.isEmpty()) {
+
+           //Log.i("on load finished " , "addeddddddddddddddd");
             movieList.addAll(movies);
             //Log.i("firstelementonmoveelist" , movieList.get(0).getmTitle());
             adapter.notifyDataSetChanged();
+            errorMessage.setVisibility(View.GONE);
         }
+
+        if (movies.size() == 0){
+            recyclerView.setVisibility(View.GONE);
+        }
+        else if (movies.size() > 0){
+            recyclerView.setVisibility(View.VISIBLE);
+        }
+
+
 
     }
 
     @Override
     public void onLoaderReset(Loader<List<Movie>> loader) {
+       //Log.i("on load reset " , "addeddddddddddddddd");
         movieList.clear();
+        adapter.notifyDataSetChanged();
     }
 
 
@@ -238,8 +260,6 @@ public class MainActivity extends AppCompatActivity
     }*/
 
     private void setupSpinner() {
-
-
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

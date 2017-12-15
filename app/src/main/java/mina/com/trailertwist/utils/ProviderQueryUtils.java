@@ -18,8 +18,8 @@ import mina.com.trailertwist.model.MovieTrailer;
  * Created by Mena on 12/14/2017.
  */
 
-public class ProviderUtils {
-    private ProviderUtils() {
+public class ProviderQueryUtils {
+    private ProviderQueryUtils() {
     }
 
     public static List<Movie> extractMoviesFromCursor(Cursor cursor) {
@@ -64,6 +64,7 @@ public class ProviderUtils {
         cv.put(FavoriteContract.MovieEntry.PLOT, movie.getmOverView());
         cv.put(FavoriteContract.MovieEntry.RATE, movie.getmVote());
         cv.put(FavoriteContract.MovieEntry.RELEASE_DATE, movie.getmReleaseDate());
+        cv.put(FavoriteContract.MovieEntry.POSTER, movie.getmPosterPath());
 
 
         Uri insertUri = FavoriteContract.MovieEntry.CONTENT_URI;

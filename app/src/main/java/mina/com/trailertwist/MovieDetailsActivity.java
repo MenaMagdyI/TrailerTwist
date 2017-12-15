@@ -39,7 +39,7 @@ import mina.com.trailertwist.data.FavoriteContract;
 import mina.com.trailertwist.model.Movie;
 import mina.com.trailertwist.model.MovieReview;
 import mina.com.trailertwist.model.MovieTrailer;
-import mina.com.trailertwist.utils.ProviderUtils;
+import mina.com.trailertwist.utils.ProviderQueryUtils;
 
 public class MovieDetailsActivity extends AppCompatActivity
 implements TrailerAdapter.ListItemClickListener
@@ -177,15 +177,15 @@ implements TrailerAdapter.ListItemClickListener
                     @Override
                     public void onFavoriteChanged(MaterialFavoriteButton buttonView, boolean favorite) {
                         if (favorite) {
-                            ProviderUtils.insertFavoriteMovie(mcontext, selectedmovie);
-                            ProviderUtils.insertFavoriteReviews(mcontext, mReviews, selectedmovie.getmId());
-                            ProviderUtils.insertFavoriteTrailers(mcontext, mTrailers, selectedmovie.getmId());
+                            ProviderQueryUtils.insertFavoriteMovie(mcontext, selectedmovie);
+                            ProviderQueryUtils.insertFavoriteReviews(mcontext, mReviews, selectedmovie.getmId());
+                            ProviderQueryUtils.insertFavoriteTrailers(mcontext, mTrailers, selectedmovie.getmId());
 
                             testFavBut = "Favorite it !";
                         } else {
-                            ProviderUtils.deleteFavoriteMovie(mcontext, selectedmovie.getmId());
-                            ProviderUtils.deleteMovieReviews(mcontext, selectedmovie.getmId());
-                            ProviderUtils.deleteMovieTrailers(mcontext,selectedmovie.getmId());
+                            ProviderQueryUtils.deleteFavoriteMovie(mcontext, selectedmovie.getmId());
+                            ProviderQueryUtils.deleteMovieReviews(mcontext, selectedmovie.getmId());
+                            ProviderQueryUtils.deleteMovieTrailers(mcontext,selectedmovie.getmId());
                             testFavBut = "UNFavorite it !";
                         }
                     }
