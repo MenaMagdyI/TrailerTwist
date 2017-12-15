@@ -39,7 +39,8 @@ import mina.com.trailertwist.model.Movie;
 public class MainActivity extends AppCompatActivity
         implements LoaderManager.LoaderCallbacks<List<Movie>>,
         SharedPreferences.OnSharedPreferenceChangeListener,
-        MovieAdapter.ListItemClickListener{
+        MovieAdapter.ListItemClickListener,
+MovieAdapter.OnReachLastPosition{
 
 
 
@@ -59,6 +60,7 @@ public class MainActivity extends AppCompatActivity
     private final String spinner_on_save_instance_key = "spinner position" ;
     private TextView errorMessage ;
     private View loadingIndicator;
+    private NetworkInfo networkInfo;
 
 
 
@@ -94,7 +96,7 @@ public class MainActivity extends AppCompatActivity
         //Log.i("main: ","before adapter notify");
 
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        networkInfo = connMgr.getActiveNetworkInfo();
 
 
         if (networkInfo != null && networkInfo.isConnected()) {
@@ -104,17 +106,9 @@ public class MainActivity extends AppCompatActivity
 
             errorMessage.setText(R.string.no_internet);
         }
-/*
-        movieList.add(new Movie(5.6, "It","/9E2y5Q7WlCVNEhP5GiVTjhEhx1o.jpg"));
-        movieList.add(new Movie(9.3, "Batman returns","/9E2y5Q7WlCVNEhP5GiVTjhEhx1o.jpg"));
-        movieList.add(new Movie(5.6, "It","/9E2y5Q7WlCVNEhP5GiVTjhEhx1o.jpg"));
-        movieList.add(new Movie(9.3, "Batman returns","/9E2y5Q7WlCVNEhP5GiVTjhEhx1o.jpg"));
-        movieList.add(new Movie(5.6, "It","/9E2y5Q7WlCVNEhP5GiVTjhEhx1o.jpg"));
-        movieList.add(new Movie(9.3, "Batman returns","/9E2y5Q7WlCVNEhP5GiVTjhEhx1o.jpg"));
-        movieList.add(new Movie(5.6, "It","/9E2y5Q7WlCVNEhP5GiVTjhEhx1o.jpg"));
-        movieList.add(new Movie(9.3, "Batman returns","/9E2y5Q7WlCVNEhP5GiVTjhEhx1o.jpg"));
 
-*/
+
+
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         prefs.registerOnSharedPreferenceChangeListener(this);
@@ -302,6 +296,14 @@ public class MainActivity extends AppCompatActivity
         Intent detailIntent = new Intent(MainActivity.this, MovieDetailsActivity.class);
         detailIntent.putExtra(MOVIE_INFO, currentMovie);
         startActivity(detailIntent);
+    }
+
+    @Override
+    public void refreshPage(int p) {
+        if(!sortedBy.equals(getString(R.string.sorted_by_favorites_lable)) && networkInfo.isConnected()) {
+            page++;
+            restartLoader();
+        }
     }
 
 

@@ -31,10 +31,19 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
     private List<Movie> movieList;
 
     private final ListItemClickListener mOnclickListner;
+    private static OnReachLastPosition mRefreshListener;
 
 
     public interface ListItemClickListener{
         void onListitemClick(int clickitemIndex);
+    }
+
+    public interface OnReachLastPosition {
+        void refreshPage(int page);
+    }
+
+    public void setOnReachLastPositionListener(OnReachLastPosition refreshListener) {
+        this.mRefreshListener = refreshListener;
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
