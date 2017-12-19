@@ -52,7 +52,7 @@
                         android:layout_height="wrap_content"
                         android:text="Movie Title"
                         android:textColor="@android:color/white"
-                        android:textSize="30dp" />
+                        android:textSize="30sp" />
 
                     <TextView
                         android:id="@+id/movie_rate"
@@ -60,7 +60,7 @@
                         android:layout_height="wrap_content"
                         android:text="Rate"
                         android:textColor="@android:color/white"
-                        android:textSize="18dp" />
+                        android:textSize="18sp" />
                 </LinearLayout>
             </RelativeLayout>
 

@@ -1,10 +1,11 @@
 package mina.com.trailertwist;
 
 
-
+import android.app.LoaderManager;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Context;
 import android.content.Intent;
+import android.content.Loader;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -12,9 +13,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
-import android.content.Loader;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -42,51 +42,48 @@ import mina.com.trailertwist.model.MovieTrailer;
 import mina.com.trailertwist.utils.ProviderQueryUtils;
 
 public class MovieDetailsActivity extends AppCompatActivity
-implements TrailerAdapter.ListItemClickListener
-{
+        implements TrailerAdapter.ListItemClickListener {
 
-            private Context mcontext = this;
-
-            private String USGS_REQUEST_URL ;
-            private Movie selectedmovie;
-            private TextView mtitle, mCardTitle, mreleaseDate,mRate,mOverview,mCardRate,mCardVotesC,mCardAdult;
-            private ImageView mPoster, mBackdrop;
-            private RecyclerView trailersrecyclerView, reviewsrecyclerview;
-            private double rate;
-            private String mStrAdult = "no", testFavBut;;
-            private Toast warnings;
-            private boolean isFavoriteFlag;
-
-
-
-            private ArrayList<MovieTrailer> mTrailers;
-            public static final int TRAILERS_LOADER_ID = 44;
-            private TrailerAdapter mTrailersAdapter;
-
-
-            private ArrayList<MovieReview> mReviews;
-            public static final int REVIEWS_LOADER_ID = 55;
-            private ReviewAdapter mReviewAdapter;
+    public static final int TRAILERS_LOADER_ID = 44;
+    public static final int REVIEWS_LOADER_ID = 55;
+    public static int scrollX = 0;
+    public static int scrollY = -1;
+    private Context mcontext = this;
+    private String USGS_REQUEST_URL;
+    private Movie selectedmovie;
+    private TextView mtitle, mCardTitle, mreleaseDate, mRate, mOverview, mCardRate, mCardVotesC, mCardAdult;
+    private ImageView mPoster, mBackdrop;
+    private NestedScrollView scrollView;
+    private RecyclerView trailersrecyclerView, reviewsrecyclerview;
+    ;
+    private double rate;
+    private String mStrAdult = "no", testFavBut;
+    private Toast warnings;
+    private boolean isFavoriteFlag;
+    private ArrayList<MovieTrailer> mTrailers;
+    private TrailerAdapter mTrailersAdapter;
 
 
-        private LoaderCallbacks<List<MovieTrailer>> MovieTrailerCallbacks =
-            new LoaderCallbacks<List<MovieTrailer>>(){
+    private ArrayList<MovieReview> mReviews;
+    private ReviewAdapter mReviewAdapter;
+    private LoaderCallbacks<List<MovieTrailer>> MovieTrailerCallbacks =
+            new LoaderCallbacks<List<MovieTrailer>>() {
                 @Override
                 public Loader<List<MovieTrailer>> onCreateLoader(int id, Bundle args) {
 
-                    String temp = USGS_REQUEST_URL + selectedmovie.getmId() + "/"+mcontext.getString(R.string.trailers_url_path)+"?";
+                    String temp = USGS_REQUEST_URL + selectedmovie.getmId() + "/" + mcontext.getString(R.string.trailers_url_path) + "?";
                     Uri baseUri = Uri.parse(temp);
                     Uri.Builder uriBuilder = baseUri.buildUpon();
                     uriBuilder.appendQueryParameter(mcontext.getString(R.string.api_key_url_key), mcontext.getString(R.string.api_key_url_value));
 
-                    Log.i("Trailers url: " , uriBuilder.toString());
+                    Log.i("Trailers url: ", uriBuilder.toString());
                     return new TrailerLoader(mcontext, uriBuilder.toString());
                 }
 
                 @Override
                 public void onLoadFinished(Loader<List<MovieTrailer>> loader, List<MovieTrailer> data) {
 
-                    if (data != null && !data.isEmpty()){
+                    if (data != null && !data.isEmpty()) {
                         mTrailers.addAll(data);
                         mTrailersAdapter.notifyDataSetChanged();
                     }
@@ -98,19 +95,17 @@ implements TrailerAdapter.ListItemClickListener
                 }
 
             };
-
-
-        private LoaderCallbacks<List<MovieReview>>  MovieReviewCallbacks =
-            new LoaderCallbacks<List<MovieReview>>(){
+    private LoaderCallbacks<List<MovieReview>> MovieReviewCallbacks =
+            new LoaderCallbacks<List<MovieReview>>() {
 
                 @Override
                 public Loader<List<MovieReview>> onCreateLoader(int i, Bundle bundle) {
-                    String temp = USGS_REQUEST_URL + selectedmovie.getmId() + "/"+mcontext.getString(R.string.reviews_url_path)+"?";
+                    String temp = USGS_REQUEST_URL + selectedmovie.getmId() + "/" + mcontext.getString(R.string.reviews_url_path) + "?";
                     Uri baseUri = Uri.parse(temp);
                     Uri.Builder uriBuilder = baseUri.buildUpon();
                     uriBuilder.appendQueryParameter(mcontext.getString(R.string.api_key_url_key), mcontext.getString(R.string.api_key_url_value));
 
-                    Log.i("Reviews url: " , uriBuilder.toString());
+                    Log.i("Reviews url: ", uriBuilder.toString());
                     return new ReviewLoader(mcontext, uriBuilder.toString());
 
                 }
@@ -118,7 +113,7 @@ implements TrailerAdapter.ListItemClickListener
                 @Override
                 public void onLoadFinished(Loader<List<MovieReview>> loader, List<MovieReview> movieReviews) {
 
-                    if (movieReviews != null && !movieReviews.isEmpty()){
+                    if (movieReviews != null && !movieReviews.isEmpty()) {
                         mReviews.addAll(movieReviews);
                         mReviewAdapter.notifyDataSetChanged();
                     }
@@ -131,9 +126,26 @@ implements TrailerAdapter.ListItemClickListener
                 }
             };
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        scrollX = scrollView.getScrollX();
+        scrollY = scrollView.getScrollY();
 
+    }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        scrollView.post(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                scrollView.scrollTo(scrollX, scrollY);
+            }
+        });
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -151,11 +163,10 @@ implements TrailerAdapter.ListItemClickListener
         selectedmovie = getIntent().getParcelableExtra(MainActivity.MOVIE_INFO);
 
 
-
         mTrailers = new ArrayList<>();
         mReviews = new ArrayList<>();
-        mTrailersAdapter = new TrailerAdapter (this,mTrailers,this); // the third args is for the onclick listner
-        mReviewAdapter = new ReviewAdapter(this,mReviews);
+        mTrailersAdapter = new TrailerAdapter(this, mTrailers, this); // the third args is for the onclick listner
+        mReviewAdapter = new ReviewAdapter(this, mReviews);
 
         Uri movieUri = FavoriteContract.MovieEntry.CONTENT_URI;
         final String selection = FavoriteContract.MovieEntry._ID + "=?";
@@ -185,7 +196,7 @@ implements TrailerAdapter.ListItemClickListener
                         } else {
                             ProviderQueryUtils.deleteFavoriteMovie(mcontext, selectedmovie.getmId());
                             ProviderQueryUtils.deleteMovieReviews(mcontext, selectedmovie.getmId());
-                            ProviderQueryUtils.deleteMovieTrailers(mcontext,selectedmovie.getmId());
+                            ProviderQueryUtils.deleteMovieTrailers(mcontext, selectedmovie.getmId());
                             testFavBut = "UNFavorite it !";
                         }
                     }
@@ -208,38 +219,39 @@ implements TrailerAdapter.ListItemClickListener
         mRate = (TextView) findViewById(R.id.movie_rate);
         mCardRate = (TextView) findViewById(R.id.movie_card_rate_id);
         mOverview = (TextView) findViewById(R.id.movie_overview);
-        mBackdrop = (ImageView) findViewById(R.id.Backdrop) ;
-        mPoster = (ImageView) findViewById(R.id.movie_card_Image_Id) ;
-        mCardVotesC = (TextView) findViewById(R.id.movie_card_ratevotes_id) ;
-        mCardAdult = (TextView) findViewById(R.id.movie_card_Adult_id) ;
+        mBackdrop = (ImageView) findViewById(R.id.Backdrop);
+        mPoster = (ImageView) findViewById(R.id.movie_card_Image_Id);
+        mCardVotesC = (TextView) findViewById(R.id.movie_card_ratevotes_id);
+        mCardAdult = (TextView) findViewById(R.id.movie_card_Adult_id);
         trailersrecyclerView = (RecyclerView) findViewById(R.id.Trailers_recycler_view);
         reviewsrecyclerview = (RecyclerView) findViewById(R.id.Reviews_recycler_view);
+        scrollView = (NestedScrollView) findViewById(R.id.nested_scrollview);
 
 
-        if (selectedmovie.ismAdult()){
+        if (selectedmovie.ismAdult()) {
             mStrAdult = "yes";
         }
 
 
         mtitle.setText(selectedmovie.getmTitle());
         mCardTitle.setText(selectedmovie.getmTitle());
-        mreleaseDate.setText("Release Date: "+selectedmovie.getmReleaseDate());
+        mreleaseDate.setText("Release Date: " + selectedmovie.getmReleaseDate());
         rate = selectedmovie.getmVote();
         mRate.setText(String.valueOf(rate));
-        mCardRate.setText("Rate: "+String.valueOf(rate)+" /10");
-        mOverview.setText("Overview: "+selectedmovie.getmOverView());
-        mCardVotesC.setText("Votes Count: "+selectedmovie.getmVoteCount());
-        mCardAdult.setText("Adult Status: "+mStrAdult);
+        mCardRate.setText("Rate: " + String.valueOf(rate) + " /10");
+        mOverview.setText("Overview: " + selectedmovie.getmOverView());
+        mCardVotesC.setText("Votes Count: " + selectedmovie.getmVoteCount());
+        mCardAdult.setText("Adult Status: " + mStrAdult);
 
-        Log.i("backDrop link",this.getString(R.string.poster_url)+selectedmovie.getmBackdropPath());
+        Log.i("backDrop link", this.getString(R.string.poster_url) + selectedmovie.getmBackdropPath());
         Picasso.with(this)
-                .load(this.getString(R.string.poster_url)+selectedmovie.getmBackdropPath())
+                .load(this.getString(R.string.poster_url) + selectedmovie.getmBackdropPath())
                 .error(ContextCompat.getDrawable(this, R.drawable.content))
                 .into(mBackdrop);
 
 
         Picasso.with(this)
-                .load(this.getString(R.string.poster_url)+selectedmovie.getmPosterPath())
+                .load(this.getString(R.string.poster_url) + selectedmovie.getmPosterPath())
                 .error(ContextCompat.getDrawable(this, R.drawable.content))
                 .into(mPoster);
 
@@ -274,10 +286,7 @@ implements TrailerAdapter.ListItemClickListener
         mReviewAdapter.notifyDataSetChanged();
 
 
-
-
     }
-
 
 
     private void initCollapsingToolbar() {
@@ -308,18 +317,35 @@ implements TrailerAdapter.ListItemClickListener
         });
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putIntArray("SCROLL_POSITION",
+                new int[]{ scrollView.getScrollX(), scrollView.getScrollY()});
+    }
 
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        final int[] position = savedInstanceState.getIntArray("SCROLL_POSITION");
+        if(position != null)
+            scrollView.post(new Runnable() {
+                public void run() {
+                    scrollView.scrollTo(position[0], position[1]);
+                }
+            });
+    }
 
     @Override
     public void onListitemClick(int clickitemIndex) {
 
         MovieTrailer currentMovieTrailer = mTrailers.get(clickitemIndex);
         String trailerKey = currentMovieTrailer.getmKey();
-        String temp = mcontext.getString(R.string.trailer_base_url)+"?";
+        String temp = mcontext.getString(R.string.trailer_base_url) + "?";
         Uri baseUri = Uri.parse(temp);
         Uri.Builder uriBuilder = baseUri.buildUpon();
         uriBuilder.appendQueryParameter(mcontext.getString(R.string.trailer_param_key), trailerKey);
-        Log.i("youtube Urllll",uriBuilder.toString());
+        Log.i("youtube Urllll", uriBuilder.toString());
 
         Intent trailerIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uriBuilder.toString()));
         if (trailerIntent.resolveActivity(getPackageManager()) != null) {
@@ -331,8 +357,6 @@ implements TrailerAdapter.ListItemClickListener
             warnings = Toast.makeText(mcontext, "Sorry, Install YouTube Or Any browser.", Toast.LENGTH_SHORT);
             warnings.show();
         }
-
-
 
 
     }

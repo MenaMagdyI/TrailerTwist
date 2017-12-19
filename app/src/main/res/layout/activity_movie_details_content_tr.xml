@@ -19,7 +19,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="10dp"
-                android:textSize="27dp"
+                android:textSize="27sp"
                 android:text="Trailers"
                 android:textColor="@color/movie_title"/>
 
@@ -54,7 +54,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="10dp"
-                android:textSize="27dp"
+                android:textSize="27sp"
                 android:text="Reviews"
                 android:textColor="@color/movie_title"/>
 

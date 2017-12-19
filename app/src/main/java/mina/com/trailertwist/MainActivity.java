@@ -5,11 +5,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Rect;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Parcelable;
+import android.os.PersistableBundle;
 import android.preference.PreferenceManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -25,6 +28,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,7 +44,8 @@ public class MainActivity extends AppCompatActivity
         implements LoaderManager.LoaderCallbacks<List<Movie>>,
         SharedPreferences.OnSharedPreferenceChangeListener,
         MovieAdapter.ListItemClickListener,
-MovieAdapter.OnReachLastPosition{
+MovieAdapter.OnReachLastPosition
+{
 
 
 
@@ -61,6 +66,7 @@ MovieAdapter.OnReachLastPosition{
     private TextView errorMessage ;
     private View loadingIndicator;
     private NetworkInfo networkInfo;
+    private RecyclerView.LayoutManager mLayoutManager;
 
 
 
@@ -81,11 +87,23 @@ MovieAdapter.OnReachLastPosition{
 
         adapter = new MovieAdapter(this, movieList,this);
 
+       /* if (mLayoutManager != null) {
+            recyclerView.getLayoutManager().onRestoreInstanceState((Parcelable) mLayoutManager);
+        }*/
+
 
 
         // why is this not working ! maybe initializing spinner problem.  // [[SOLVED]]
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            mLayoutManager = new GridLayoutManager(this, 3);
+        } else {
+            mLayoutManager = new GridLayoutManager(this, 2);
+        }
+
+
         if(savedInstanceState != null && savedInstanceState.containsKey(spinner_on_save_instance_key)) {
             spinnerSelection = savedInstanceState.getInt(spinner_on_save_instance_key);
+           // mLayoutManager.onRestoreInstanceState(savedInstanceState.getParcelable("Recyclerview_Position"));
             Log.i("saveInstanceState ", spinnerSelection+"");
         }
         else {
@@ -117,19 +135,14 @@ MovieAdapter.OnReachLastPosition{
 
 
       // Log.i("main: ","after adapter notify");
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
+
+
         recyclerView.setLayoutManager(mLayoutManager);
-        //recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         adapter.notifyDataSetChanged();
 
+
         recyclerView.setAdapter(adapter);
-
-
-
-
-
-
 
     }
 
@@ -245,13 +258,27 @@ MovieAdapter.OnReachLastPosition{
         outState.putInt(spinner_on_save_instance_key,spinner.getSelectedItemPosition());
         Log.i(spinner_on_save_instance_key, spinner.getSelectedItemPosition()+"");
 
+       /* Parcelable x = recyclerView.getLayoutManager().onSaveInstanceState();
+        outState .putParcelable("Recyclerview_Position", x);
+        Log.i("hhhhhhhhhhhhhhhh", "hhhhhhhhhhhhhhhh");
+*/
+
     }
-/*
+
+
+
+
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        spinnerSelection = savedInstanceState.getInt(spinner_on_save_instance_key);
-    }*/
+
+       /* Log.i("444444444444444", "44444444444444444");
+        mLayoutManager.onRestoreInstanceState(savedInstanceState.getParcelable("Recyclerview_Position"));
+        mLayoutManager.getPosition(recyclerView);
+        Log.i("5555555555555555", "555555555555555");
+        //spinnerSelection = savedInstanceState.getInt(spinner_on_save_instance_key);
+*/
+    }
 
     private void setupSpinner() {
 
@@ -298,6 +325,8 @@ MovieAdapter.OnReachLastPosition{
         startActivity(detailIntent);
     }
 
+
+    // not working --- IN PROGRESS
     @Override
     public void refreshPage(int p) {
         if(!sortedBy.equals(getString(R.string.sorted_by_favorites_lable)) && networkInfo.isConnected()) {

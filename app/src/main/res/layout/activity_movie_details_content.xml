@@ -7,7 +7,8 @@
     android:layout_height="wrap_content"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="mina.com.trailertwist.MovieDetailsActivity"
-    tools:showIn="@layout/activity_movie_details">
+    tools:showIn="@layout/activity_movie_details"
+    android:id="@+id/nested_scrollview">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -40,7 +41,7 @@
                                             android:layout_height="wrap_content"
                                             android:id="@+id/movie_card_title_id"
                                             android:text="Place Holder"
-                                            android:textSize="25dp"
+                                            android:textSize="25sp"
                                             android:textColor="@color/movie_title"/>
 
 
@@ -49,7 +50,7 @@
                                             android:layout_height="wrap_content"
                                             android:id="@+id/movie_card_date_id"
                                             android:text="Place Holder"
-                                            android:textSize="15dp"
+                                            android:textSize="15sp"
                                             android:layout_marginTop="3dp"
                                             android:layout_marginLeft="3dp"
                                             android:textColor="@color/movie_title"/>
@@ -61,7 +62,7 @@
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:id="@+id/movie_card_rate_id"
-                                            android:textSize="15dp"
+                                            android:textSize="15sp"
                                             android:text="Rate: 9.1"
                                             android:layout_marginLeft="3dp"
                                             android:textColor="@color/movie_title"/>
@@ -71,7 +72,7 @@
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:id="@+id/movie_card_ratevotes_id"
-                                            android:textSize="15dp"
+                                            android:textSize="15sp"
                                             android:text="1405 vorte"
                                             android:layout_marginLeft="5dp"
                                             android:textColor="@color/movie_title"/>
@@ -81,7 +82,7 @@
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:id="@+id/movie_card_Adult_id"
-                                            android:textSize="15dp"
+                                            android:textSize="15sp"
                                             android:text="Adults only: "
                                             android:layout_marginLeft="5dp"
                                             android:textColor="@color/movie_title"/>
