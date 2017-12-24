@@ -18,10 +18,10 @@ public class FavoriteProvider extends ContentProvider {
     private FavoriteDBHelper mMovieDbHelper;
     private static UriMatcher sUriMatcher = buildUriMatcher();
 
-    public static final int MOVIES_CODE         = 100;
+    public static final int MOVIES_CODE = 100;
     public static final int MOVIES_WITH_ID_CODE = 101;
-    public static final int REVIEWS_CODE        = 200;
-    public static final int TRAILERS_CODE       = 300;
+    public static final int REVIEWS_CODE = 200;
+    public static final int TRAILERS_CODE = 300;
 
     public static UriMatcher buildUriMatcher() {
         UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
@@ -120,7 +120,7 @@ public class FavoriteProvider extends ContentProvider {
                 try {
                     for (ContentValues cv : values) {
                         long id = sqLiteDatabase.insert(FavoriteContract.ReviewEntry.TABLE_NAME, null, cv);
-                        if(id != -1) {
+                        if (id != -1) {
                             rowsInserted++;
                         }
                     }
@@ -128,7 +128,7 @@ public class FavoriteProvider extends ContentProvider {
                 } finally {
                     sqLiteDatabase.endTransaction();
                 }
-                if(rowsInserted > 0) {
+                if (rowsInserted > 0) {
                     getContext().getContentResolver().notifyChange(uri, null);
                 }
                 return rowsInserted;
@@ -138,7 +138,7 @@ public class FavoriteProvider extends ContentProvider {
                 try {
                     for (ContentValues cv : values) {
                         long id = sqLiteDatabase.insert(FavoriteContract.TrailerEntry.TABLE_NAME, null, cv);
-                        if(id != -1) {
+                        if (id != -1) {
                             rowsInserted++;
                         }
                     }
@@ -146,7 +146,7 @@ public class FavoriteProvider extends ContentProvider {
                 } finally {
                     sqLiteDatabase.endTransaction();
                 }
-                if(rowsInserted > 0) {
+                if (rowsInserted > 0) {
                     getContext().getContentResolver().notifyChange(uri, null);
                 }
                 return rowsInserted;

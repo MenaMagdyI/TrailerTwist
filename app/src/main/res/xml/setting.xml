@@ -10,5 +10,4 @@
         android:title="@string/prefrence_title_1" />
 
 
-
 </PreferenceScreen>

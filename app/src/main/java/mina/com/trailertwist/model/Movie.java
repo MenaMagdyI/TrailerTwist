@@ -2,7 +2,6 @@ package mina.com.trailertwist.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
 /**
  * Created by Mena on 11/17/2017.
@@ -24,7 +23,6 @@ public class Movie implements Parcelable {
         this.mVote = mVote;
         this.mTitle = mTitle;
         this.mPosterPath = mPosterPath;
-        //Log.i("constructore:",mTitle+" created !");
     }
 
     public Movie(int mId, String mTitle, String mReleaseDate, String mOverView, double mVote, String mPosterPath) {

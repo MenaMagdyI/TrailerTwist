@@ -3,7 +3,8 @@ package mina.com.trailertwist.data;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import mina.com.trailertwist.data.FavoriteContract.*;
+
+import mina.com.trailertwist.data.FavoriteContract.MovieEntry;
 
 /**
  * Created by Mena on 12/14/2017.
@@ -21,7 +22,7 @@ public class FavoriteDBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        String SQL_CREATE_MOVIES_TABLE =  "CREATE TABLE " + MovieEntry.TABLE_NAME + " ("
+        String SQL_CREATE_MOVIES_TABLE = "CREATE TABLE " + MovieEntry.TABLE_NAME + " ("
                 + MovieEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + MovieEntry.MOVIE_TITLE + " TEXT, "
                 + MovieEntry.RELEASE_DATE + " TEXT, "
@@ -32,22 +33,20 @@ public class FavoriteDBHelper extends SQLiteOpenHelper {
 
         final String SQL_CREATE_TRAILERS_TABLE =
                 "CREATE TABLE " + FavoriteContract.TrailerEntry.TABLE_NAME + " ( " +
-                        FavoriteContract.TrailerEntry.MOVIE_ID      + " INTEGER, " +
-                        FavoriteContract.TrailerEntry.TITLE         + " TEXT, " +
-                        FavoriteContract.TrailerEntry.YOUTUBE_KEY   + " TEXT, " +
+                        FavoriteContract.TrailerEntry.MOVIE_ID + " INTEGER, " +
+                        FavoriteContract.TrailerEntry.TITLE + " TEXT, " +
+                        FavoriteContract.TrailerEntry.YOUTUBE_KEY + " TEXT, " +
                         "FOREIGN KEY(" + FavoriteContract.TrailerEntry.MOVIE_ID + ") " +
-                        "REFERENCES " + MovieEntry.TABLE_NAME + "(" + MovieEntry._ID +") " + " )";
-
+                        "REFERENCES " + MovieEntry.TABLE_NAME + "(" + MovieEntry._ID + ") " + " )";
 
 
         final String SQL_CREATE_REVIEWS_TABLE =
                 "CREATE TABLE " + FavoriteContract.ReviewEntry.TABLE_NAME + " ( " +
-                        FavoriteContract.ReviewEntry.MOVIE_ID  + " INTEGER, " +
-                        FavoriteContract.ReviewEntry.AUTHOR    + " TEXT, " +
-                        FavoriteContract.ReviewEntry.CONTENT   + " TEXT, " +
+                        FavoriteContract.ReviewEntry.MOVIE_ID + " INTEGER, " +
+                        FavoriteContract.ReviewEntry.AUTHOR + " TEXT, " +
+                        FavoriteContract.ReviewEntry.CONTENT + " TEXT, " +
                         "FOREIGN KEY(" + FavoriteContract.ReviewEntry.MOVIE_ID + ") " +
-                        "REFERENCES " + MovieEntry.TABLE_NAME + "(" + MovieEntry._ID +") " + " )";
-
+                        "REFERENCES " + MovieEntry.TABLE_NAME + "(" + MovieEntry._ID + ") " + " )";
 
 
         db.execSQL(SQL_CREATE_MOVIES_TABLE);

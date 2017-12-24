@@ -1,7 +1,7 @@
 package mina.com.trailertwist.Loader;
 
-import android.content.AsyncTaskLoader;
 import android.content.Context;
+import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
 
 import java.util.List;
@@ -20,7 +20,7 @@ public class MovieLoader extends AsyncTaskLoader<List<Movie>> {
     private String mUrl;
     private int mUserChoice;
 
-    public MovieLoader(Context context, String url,int userChoice) {
+    public MovieLoader(Context context, String url, int userChoice) {
         super(context);
         mUrl = url;
         mUserChoice = userChoice;
@@ -37,16 +37,15 @@ public class MovieLoader extends AsyncTaskLoader<List<Movie>> {
             return null;
         }
         List<Movie> movies;
-       Log.i("user choiceeee",Integer.toString(mUserChoice));
+        Log.i("user choiceeee", Integer.toString(mUserChoice));
 
-        if (mUserChoice == 4){
+        if (mUserChoice == 4) {
             movies = ProviderQueryUtils.getAllFavoriteMovies(getContext());
-        }
-        else{
-            movies = NetworkQueryUtils.fetchDatafMovies(mUrl,getContext());
+        } else {
+            movies = NetworkQueryUtils.fetchDatafMovies(mUrl, getContext());
         }
 
-       // Log.i("Movies size of the DB: " ,Integer.toString( movies.size()));
+        // Log.i("Movies size of the DB: " ,Integer.toString( movies.size()));
         return movies;
     }
 }

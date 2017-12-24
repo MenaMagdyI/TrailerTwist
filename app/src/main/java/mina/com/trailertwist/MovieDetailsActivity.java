@@ -137,11 +137,9 @@ public class MovieDetailsActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        scrollView.post(new Runnable()
-        {
+        scrollView.post(new Runnable() {
             @Override
-            public void run()
-            {
+            public void run() {
                 scrollView.scrollTo(scrollX, scrollY);
             }
         });
@@ -160,7 +158,7 @@ public class MovieDetailsActivity extends AppCompatActivity
         initCollapsingToolbar();
 
 
-        selectedmovie = getIntent().getParcelableExtra(MainActivity.MOVIE_INFO);
+        selectedmovie = getIntent().getParcelableExtra(MainFragment.MOVIE_INFO);
 
 
         mTrailers = new ArrayList<>();
@@ -321,14 +319,14 @@ public class MovieDetailsActivity extends AppCompatActivity
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putIntArray("SCROLL_POSITION",
-                new int[]{ scrollView.getScrollX(), scrollView.getScrollY()});
+                new int[]{scrollView.getScrollX(), scrollView.getScrollY()});
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         final int[] position = savedInstanceState.getIntArray("SCROLL_POSITION");
-        if(position != null)
+        if (position != null)
             scrollView.post(new Runnable() {
                 public void run() {
                     scrollView.scrollTo(position[0], position[1]);

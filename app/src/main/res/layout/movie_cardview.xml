@@ -21,11 +21,11 @@
                 android:layout_height="@dimen/movie_cover_height"
                 android:id="@+id/thumbnail">
 
-            <ImageView
-                android:id="@+id/thumbnail_image"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/movie_cover_height"
-                android:scaleType="fitXY"/>
+                <ImageView
+                    android:id="@+id/thumbnail_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/movie_cover_height"
+                    android:scaleType="fitXY" />
 
                 <ProgressBar
                     style="?android:attr/progressBarStyle"
@@ -33,8 +33,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:visibility="visible"
-                    android:id="@+id/posterprogress"
-                    />
+                    android:id="@+id/posterprogress" />
 
             </RelativeLayout>
 
@@ -68,7 +67,6 @@
                 android:layout_marginTop="@dimen/ic_movie_overflow_margin_top"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_dots" />
-
 
 
         </RelativeLayout>

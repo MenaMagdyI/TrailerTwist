@@ -33,7 +33,7 @@ public class ReviewLoader extends AsyncTaskLoader<List<MovieReview>> {
             return null;
         }
 
-        List<MovieReview> reviews = NetworkQueryUtils.fetchDatafReviews(mUrl,getContext());
+        List<MovieReview> reviews = NetworkQueryUtils.fetchDatafReviews(mUrl, getContext());
         return reviews;
     }
 }

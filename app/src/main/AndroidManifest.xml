@@ -27,7 +27,8 @@
 
         -->
 
-        <activity android:name=".MovieDetailsActivity"
+        <activity
+            android:name=".MovieDetailsActivity"
             android:label="@string/detailed_activity"
             android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName="mina.com.trailertwist.MainActivity"></activity>
@@ -35,7 +36,7 @@
         <provider
             android:authorities="com.example.android.movies"
             android:name=".data.FavoriteProvider"
-            android:exported="false"/>
+            android:exported="false" />
     </application>
 
 </manifest>

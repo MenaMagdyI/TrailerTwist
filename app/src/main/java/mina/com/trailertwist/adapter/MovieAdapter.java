@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -34,7 +33,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
     private static OnReachLastPosition mRefreshListener;
 
 
-    public interface ListItemClickListener{
+    public interface ListItemClickListener {
         void onListitemClick(int clickitemIndex);
     }
 
@@ -46,7 +45,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
         this.mRefreshListener = refreshListener;
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public TextView title, rate;
         public ImageView thumbnail, smallmenu;
@@ -74,10 +73,15 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
         }
     }
 
-    public MovieAdapter(Context mContext, List<Movie> movieList, ListItemClickListener mOnclickListner) {
+    public MovieAdapter(Context mContext, ListItemClickListener mOnclickListner) {
         this.mContext = mContext;
-        this.movieList = movieList;
         this.mOnclickListner = mOnclickListner;
+    }
+
+    public void setDataList(List<Movie> movieList) {
+        this.movieList = movieList;
+        notifyDataSetChanged();
+
     }
 
     @Override
@@ -98,10 +102,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
         Movie movie = movieList.get(position);
 
         holder.title.setText(movie.getmTitle());
-        holder.rate.setText("Rate: "+movie.getmVote());
+        holder.rate.setText("Rate: " + movie.getmVote());
 
         Picasso.with(mContext)
-                .load(mContext.getString(R.string.poster_url)+movie.getmPosterPath())
+                .load(mContext.getString(R.string.poster_url) + movie.getmPosterPath())
                 .error(ContextCompat.getDrawable(mContext, R.drawable.content))
                 .into(holder.thumbnail);
 
@@ -109,7 +113,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
        /* View loadingIndicator = null;
         loadingIndicator = loadingIndicator.findViewById(R.id.posterprogress);*/
         holder.loadingIndicator.setVisibility(View.GONE);
-
 
 
         //Log.i("Movie adapter: ","in onBindViewHolder method after picasso");
@@ -125,7 +128,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
 
     @Override
     public int getItemCount() {
-        return movieList.size();
+        if (movieList != null) {
+            return movieList.size();
+
+        } else return 0;
     }
 
 

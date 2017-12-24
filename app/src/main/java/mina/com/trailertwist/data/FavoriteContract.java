@@ -11,7 +11,8 @@ import android.provider.BaseColumns;
 public final class FavoriteContract {
 
 
-    FavoriteContract(){}
+    FavoriteContract() {
+    }
 
     public static final String CONTENT_AUTHORITY = "com.example.android.movies";
 
@@ -22,9 +23,7 @@ public final class FavoriteContract {
     public static final String PATH_REVIEWS = "reviews";
 
 
-
-    public static final class MovieEntry implements BaseColumns
-    {
+    public static final class MovieEntry implements BaseColumns {
 
         public static final Uri CONTENT_URI = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_MOVIES);
 
@@ -62,7 +61,6 @@ public final class FavoriteContract {
         public static final String YOUTUBE_KEY = "youtube_key";
 
 
-
     }
 
     public static final class ReviewEntry {
@@ -82,10 +80,7 @@ public final class FavoriteContract {
         public static final String CONTENT = "content";
 
 
-
-
     }
-
 
 
 }

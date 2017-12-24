@@ -47,12 +47,12 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
     }
 
 
-    public interface ListItemClickListener{
+    public interface ListItemClickListener {
         void onListitemClick(int clickitemIndex);
     }
 
 
-    public class TrailerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class TrailerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public TextView mtTitle, mtType;
 
@@ -71,12 +71,11 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
         }
     }
 
-    public TrailerAdapter(Context mContext, List<MovieTrailer> TrailerList, ListItemClickListener mOnclickListner ){
+    public TrailerAdapter(Context mContext, List<MovieTrailer> TrailerList, ListItemClickListener mOnclickListner) {
         this.mContext = mContext;
         this.TrailerList = TrailerList;
         this.mOnclickListner = mOnclickListner;
     }
-
 
 
 }

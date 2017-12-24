@@ -3,7 +3,6 @@ package mina.com.trailertwist.utils;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.net.Uri;
 
 import java.util.ArrayList;
@@ -40,7 +39,7 @@ public class ProviderQueryUtils {
             plot = cursor.getString(cursor.getColumnIndex(FavoriteContract.MovieEntry.PLOT));
             rate = cursor.getString(cursor.getColumnIndex(FavoriteContract.MovieEntry.RATE));
             rateDouble = Double.parseDouble(rate);
-            poster= cursor.getString(cursor.getColumnIndex(FavoriteContract.MovieEntry.POSTER));
+            poster = cursor.getString(cursor.getColumnIndex(FavoriteContract.MovieEntry.POSTER));
 
 
             movies.add(new Movie(movieId, movieTitle, releaseDate, plot, rateDouble, poster));
@@ -54,7 +53,6 @@ public class ProviderQueryUtils {
         Cursor allFavMoviesCursor = context.getContentResolver().query(queryUri, null, null, null, null);
         return extractMoviesFromCursor(allFavMoviesCursor);
     }
-
 
 
     public static Uri insertFavoriteMovie(Context context, Movie movie) {
@@ -83,7 +81,7 @@ public class ProviderQueryUtils {
     public static int insertFavoriteReviews(Context context, List<MovieReview> reviews, int movieId) {
         int reviewsSize = reviews.size();
         ContentValues[] values = new ContentValues[reviewsSize];
-        for (int i=0 ; i<reviewsSize ; i++) {
+        for (int i = 0; i < reviewsSize; i++) {
             String author = reviews.get(i).getmAuthor();
             String content = reviews.get(i).getmContent();
 
@@ -104,6 +102,7 @@ public class ProviderQueryUtils {
         Cursor queryCursor = context.getContentResolver().query(queryUri, null, selection, selectionArgs, null);
         return extractReviewsFromCursor(queryCursor);
     }
+
     public static ArrayList<MovieReview> extractReviewsFromCursor(Cursor cursor) {
         ArrayList<MovieReview> reviews = new ArrayList<>();
         while (cursor.moveToNext()) {
@@ -117,16 +116,16 @@ public class ProviderQueryUtils {
     }
 
     public static int deleteMovieReviews(Context context, int movieId) {
-        Uri deleteUri       = FavoriteContract.ReviewEntry.CONTENT_URI;
-        String where        = FavoriteContract.ReviewEntry.MOVIE_ID + "=?";
-        String[] whereArgs  = new String[]{String.valueOf(movieId)};
+        Uri deleteUri = FavoriteContract.ReviewEntry.CONTENT_URI;
+        String where = FavoriteContract.ReviewEntry.MOVIE_ID + "=?";
+        String[] whereArgs = new String[]{String.valueOf(movieId)};
         return context.getContentResolver().delete(deleteUri, where, whereArgs);
     }
 
     public static int insertFavoriteTrailers(Context context, List<MovieTrailer> trailers, int movieId) {
         int trailersSize = trailers.size();
         ContentValues[] values = new ContentValues[trailersSize];
-        for(int i=0 ; i<trailersSize ; i++) {
+        for (int i = 0; i < trailersSize; i++) {
             String title = trailers.get(i).getmName();
             String key = trailers.get(i).getmKey();
 
@@ -154,16 +153,16 @@ public class ProviderQueryUtils {
             String title = cursor.getString(cursor.getColumnIndex(FavoriteContract.TrailerEntry.TITLE));
             String key = cursor.getString(cursor.getColumnIndex(FavoriteContract.TrailerEntry.YOUTUBE_KEY));
 
-            trailers.add(new MovieTrailer(key,title));
+            trailers.add(new MovieTrailer(key, title));
         }
         cursor.close();
         return trailers;
     }
 
     public static int deleteMovieTrailers(Context context, int movieId) {
-        Uri deleteUri       = FavoriteContract.TrailerEntry.CONTENT_URI;
-        String where        = FavoriteContract.TrailerEntry.MOVIE_ID + "=?";
-        String[] whereArgs  = new String[]{String.valueOf(movieId)};
+        Uri deleteUri = FavoriteContract.TrailerEntry.CONTENT_URI;
+        String where = FavoriteContract.TrailerEntry.MOVIE_ID + "=?";
+        String[] whereArgs = new String[]{String.valueOf(movieId)};
         return context.getContentResolver().delete(deleteUri, where, whereArgs);
     }
 }

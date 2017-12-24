@@ -7,16 +7,14 @@
         android:icon="@drawable/ic_filter"
         android:title="edit"
         android:orderInCategory="2"
-        app:showAsAction="always"
-        />
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/sort_spinner"
         android:orderInCategory="1"
         app:showAsAction="always"
         android:title="@string/sort_option"
-        app:actionViewClass="android.widget.Spinner"
-        />
+        app:actionViewClass="android.widget.Spinner" />
 
 
 </menu>

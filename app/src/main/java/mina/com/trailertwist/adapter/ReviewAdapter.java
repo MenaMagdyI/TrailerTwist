@@ -10,7 +10,6 @@ import android.widget.TextView;
 import java.util.List;
 
 import mina.com.trailertwist.R;
-import mina.com.trailertwist.model.Movie;
 import mina.com.trailertwist.model.MovieReview;
 
 /**
@@ -44,7 +43,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.TrailerVie
     }
 
 
-    public class TrailerViewHolder extends RecyclerView.ViewHolder{
+    public class TrailerViewHolder extends RecyclerView.ViewHolder {
 
         public TextView mrUser, mrContent;
 
